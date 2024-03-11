@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "static": "serve -p 5050 static",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
