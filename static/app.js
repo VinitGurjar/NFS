@@ -1,5 +1,7 @@
 // Mock data representing product information
-const mockData = [
+const API = "http://localhost:3000/";
+
+const data = [
   {
     id: "A1",
     name: "Vacuum Cleaner",
@@ -21,11 +23,13 @@ const mockData = [
 ];
 
 // Function to populate products in the DOM
-const populateProducts = () => {
+const populateProducts = async () => {
   // Selecting the container for products
   const products = document.querySelector("#products");
   // Clearing any existing content inside the container
   products.innerHTML = "";
+  const res = await fetch(API);
+  const data = await res.json();
   // Looping through mock data to create product items
   for (const product of mockData) {
     //Creating a product item element
