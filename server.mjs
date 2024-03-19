@@ -25,7 +25,7 @@ const data = JSON.stringify([
 ]);
 
 // Creates a new HTTP server
-const server = await createServer((_req, res_) => {
+const server = createServer((_req, res) => {
   // Set CORS headers to allow cross-origin requests
   res.setHeader("Access-Control-Allow-Origin", "*");
 
