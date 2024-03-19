@@ -31,7 +31,7 @@ const populateProducts = async () => {
   const res = await fetch(API);
   const data = await res.json();
   // Looping through mock data to create product items
-  for (const product of mockData) {
+  for (const product of data) {
     //Creating a product item element
     const item = document.createElement("product-item");
     // Looping through keys to create spans for each piece of product information
