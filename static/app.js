@@ -1,34 +1,13 @@
 // Mock data representing product information
 const API = "http://localhost:3000/";
 
-const data = [
-  {
-    id: "A1",
-    name: "Vacuum Cleaner",
-    rrp: "99.99",
-    info: "The most powerful vacuum in the world.",
-  },
-  {
-    id: "A2",
-    name: "Leaf Blower",
-    rrp: "303.33",
-    info: "This product will blow your socks off.",
-  },
-  {
-    id: "B1",
-    name: "Chocolate Bar",
-    rrp: "22.40",
-    info: "Deliciously overpriced chocolate.",
-  },
-];
-
 // Function to populate products in the DOM
-const populateProducts = async () => {
+const populateProducts = async (category) => {
   // Selecting the container for products
   const products = document.querySelector("#products");
   // Clearing any existing content inside the container
   products.innerHTML = "";
-  const res = await fetch(API);
+  const res = await fetch(`${API}/${category}`);
   const data = await res.json();
   // Looping through mock data to create product items
   for (const product of data) {
@@ -50,9 +29,10 @@ const populateProducts = async () => {
   }
 };
 
-// Event listener for fetching and populating products
-document.querySelector("#fetch").addEventListener("click", async () => {
-  populateProducts();
+const category = document.querySelector("#category");
+
+category.addEventListener("input", async ({ target }) => {
+  await populateProducts(target.value);
 });
 
 // Defining a custom element for a product item
@@ -62,8 +42,8 @@ customElements.define(
     constructor() {
       super();
       // Cloning the template content for the product item and appending it to the shadow DOM
-      const itemTmpl = document.querySelector("#item").content.cloneNode(true);
-      this.attachShadow({ mode: "open" }).appendChild(itemTmpl);
+      const itemTmpl = document.querySelector("#item").content;
+      this.attachShadow({ mode: "open" }).appendChild(itemTmpl.cloneNode(true));
     }
   }
 );
