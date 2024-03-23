@@ -1,15 +1,17 @@
 {
-  "name": "lfx-node",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "static": "serve -p 5050 static",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "static": "^2.0.0"
-  }
+	"name": "lfx-node",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"static": "serve -p 5050 static",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"fastify": "^4.26.2",
+		"fastify-cli": "^6.1.1",
+		"static": "^2.0.0"
+	}
 }
