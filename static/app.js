@@ -1,49 +1,58 @@
-// Mock data representing product information
-const API = "http://localhost:3000/";
+'use strict'
 
-// Function to populate products in the DOM
-const populateProducts = async (category) => {
-  // Selecting the container for products
-  const products = document.querySelector("#products");
-  // Clearing any existing content inside the container
-  products.innerHTML = "";
-  const res = await fetch(`${API}/${category}`);
-  const data = await res.json();
-  // Looping through mock data to create product items
+// API URL
+const API = 'http://localhost:3000'
+
+// Populate products from API method
+const populateProducts = async (category, method = 'GET', payload) => {
+  const products = document.querySelector('#products')
+  products.innerHTML = ''
+  const send = method === 'GET' ? {} : {
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  }
+  const res = await fetch(${API}/${category}, { method, ...send })
+  const data = await res.json()
   for (const product of data) {
-    //Creating a product item element
-    const item = document.createElement("product-item");
-    // Looping through keys to create spans for each piece of product information
-    for (const key of ["name", "rrp", "info"]) {
-      // Creating a span element for the current key
-      const span = document.createElement("span");
-      // Setting the slot attribute to match the key
-      span.slot = key;
-      // Setting the text content of the span to the corresponding value from the mock data
-      span.textContent = product[key];
-      // Appending the span to the product item
-      item.appendChild(span);
+    const item = document.createElement('product-item')
+    for (const key of ['name', 'rrp', 'info']) {
+      const span = document.createElement('span')
+      span.slot = key
+      span.textContent = product[key]
+      item.appendChild(span)
     }
-    // Appending the product item to the products container
-    products.appendChild(item);
+    products.appendChild(item)
   }
-};
+}
 
-const category = document.querySelector("#category");
+// Get elements from DOM
+const category = document.querySelector('#category')
+const add = document.querySelector('#add')
 
-category.addEventListener("input", async ({ target }) => {
-  await populateProducts(target.value);
-});
+// Populate products
+category.addEventListener('input', async ({ target }) => {
+  add.style.display = 'block'
+  await populateProducts(target.value)
+})
 
-// Defining a custom element for a product item
-customElements.define(
-  "product-item",
-  class Item extends HTMLElement {
-    constructor() {
-      super();
-      // Cloning the template content for the product item and appending it to the shadow DOM
-      const itemTmpl = document.querySelector("#item").content;
-      this.attachShadow({ mode: "open" }).appendChild(itemTmpl.cloneNode(true));
-    }
+// Add product
+add.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const { target } = e
+  const payload = {
+    name: target.name.value,
+    rrp: target.rrp.value,
+    info: target.info.value
   }
-);
+  await populateProducts(category.value, 'POST', payload)
+  target.reset()
+})
+
+// Custom element
+customElements.define('product-item', class Item extends HTMLElement {
+  constructor() {
+    super()
+    const itemTmpl = document.querySelector('#item').content
+    this.attachShadow({mode: 'open'}).appendChild(itemTmpl.cloneNode(true))
+  }
+})
